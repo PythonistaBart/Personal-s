@@ -2,7 +2,7 @@ import streamlit as st
 import sqlite3 as sql
 import pandas as pd
 
-st.title("PERSONAL-SON")
+st.title("PERSONNAL-SON")
 
 left_menu=st.sidebar.selectbox(
     "MENÜ",
@@ -40,13 +40,11 @@ elif left_menu == "Güncelleme":
     conn = sql.connect("AriBVeriT.db")
     verit = conn.cursor()
 
-    # Tüm personelleri getir
     df = pd.read_sql("SELECT * FROM PERSONEL", conn)
 
     if df.empty:
         st.warning("Güncellenecek veri bulunamadı.")
     else:
-        # ID listesini selectbox ile sun
         secili_id = st.selectbox("Güncellemek istediğiniz kişinin ID'si:", df["ID"])
         secili_kisi = df[df["ID"] == secili_id].iloc[0]
 
@@ -74,10 +72,9 @@ elif left_menu == "Güncelleme":
 elif left_menu == "Silme":
     st.header("Personel Silme")
 
-    # Silindi mesajı kontrolü
     if st.session_state.get("silindi", False):
         st.success("Kayıtlar başarıyla silindi.")
-        st.session_state["silindi"] = False  # Sıfırla ki tekrar gösterilmesin
+        st.session_state["silindi"] = False
 
     conn = sql.connect("AriBVeriT.db")
     df = pd.read_sql("SELECT * FROM PERSONEL", conn)
